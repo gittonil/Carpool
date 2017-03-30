@@ -1,0 +1,177 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loginactivity"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_gravity="center_vertical"
+    tools:context="nil.error.korsa.Acitivity.Login" >
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:weightSum="1">
+
+
+        <!--<ProgressBar-->
+        <!--android:id="@+id/progressBar"-->
+        <!--style="?android:attr/dropDownSpinnerStyle"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:visibility="gone"-->
+        <!--android:indeterminateDrawable="@drawable/progress" >-->
+        <!--</ProgressBar>-->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:weightSum="1">
+
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/logo"
+                android:layout_height="@dimen/logo_height"
+                android:layout_width="@dimen/logo_width"
+                android:background="@drawable/logo"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/login_layout"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:weightSum="1">
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login_heading"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/heading_size"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/logdp" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/textinputlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:hint="@string/email"
+                            android:background="@drawable/edittextfield"
+                            android:inputType="textEmailAddress"
+                            android:layout_marginLeft="@dimen/autocomplete_margin"
+                            android:layout_marginRight="@dimen/autocomplete_margin"
+                            android:maxLines="1"
+                            android:imeOptions="actionNext"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/textlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <AutoCompleteTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:ems="10"
+                            android:singleLine="true"
+                            android:hint="@string/password"
+                            android:background="@drawable/edittextfield"
+                            android:id="@+id/password"
+                            android:layout_marginLeft="@dimen/autocomplete_margin"
+                            android:layout_marginRight="@dimen/autocomplete_margin"
+                            android:alpha="0.9"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvforgotpassword"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:layout_marginRight="@dimen/forgotpass_text"
+                        android:text="@string/forgot_pass"
+                        android:gravity="end"/>
+
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_vertical_margin"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/btnlogin"
+                        android:textStyle="bold"
+                        android:textColor="@drawable/buttontext"
+                        android:layout_marginLeft="@dimen/autocomplete_margin"
+                        android:layout_marginRight="@dimen/autocomplete_margin"
+                        android:text="@string/log_in"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/or"
+                        android:id="@+id/textView3"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center_horizontal" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="-15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/account_text"
+                            android:id="@+id/tvrgstrlink"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sign_up"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold"
+                            android:id="@+id/signup"
+                            android:paddingLeft="5dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Korsa</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_heading">Log In to your Account</string>
+    <string name="forgot_pass">Forgot Password</string>
+    <string name="log_in">Log In</string>
+    <string name="or">--- OR ---</string>
+    <string name="account_text">Do not have account?</string>
+    <string name="sign_up">Create Account</string>
+    <string name="email">Email-Id</string>
+    <string name="password">Password</string>
+    <string name="enter">Enter</string>
+    <string name="enterm">Enter mobile number</string>
+    <string name="name">Name</string>
+    <string name="phone">Mobile Number</string>
+    <string name="addressf">Address</string>
+    <string name="Confirm_password">Confirm Password</string>
+    <string name="term_cond">Term and Condition</string>
+    <string name="already_acc">Already have an account</string>
+    <string name="minimum_password">Password to short</string>
+    <string name="auth_failed">Authentication Failed</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="source">Source Point</string>
+    <string name="destination">Destination Point</string>
+    <string name="startDate">Start Date</string>
+    <string name="stopDate">Stop Data</string>
+    <string name="startTime">Start Time</string>
+    <string name="seatsVacant">Vacant seats :</string>
+</resources>

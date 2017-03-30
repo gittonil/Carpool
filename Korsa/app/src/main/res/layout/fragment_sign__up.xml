@@ -1,0 +1,228 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signupactivity"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_gravity="center_vertical"
+    tools:context="nil.error.korsa.Acitivity.Sign_Up">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="46dp"
+            android:weightSum="1">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/logo"
+                android:layout_height="@dimen/logo_height"
+                android:layout_width="@dimen/logo_width"
+                android:background="@drawable/logo"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/signup_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:weightSum="1">
+            
+            <ScrollView
+                android:scrollbars="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+                <LinearLayout
+                    android:id="@+id/signup_layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:weightSum="1">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/register_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <AutoCompleteTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"
+                            android:ems="10"
+                            android:hint="@string/name"
+                            android:background="@drawable/edittextfield"
+                            android:id="@+id/reg_name"
+                            android:layout_marginLeft="@dimen/autocomplete_margin"
+                            android:layout_marginRight="@dimen/autocomplete_margin"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/uname_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/top_margin">
+
+                        <AutoCompleteTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:ems="10"
+                            android:id="@+id/reg_email"
+                            android:hint="@string/email"
+                            android:background="@drawable/edittextfield"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"
+                            android:layout_marginLeft="@dimen/autocomplete_margin"
+                            android:layout_marginRight="@dimen/autocomplete_margin"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--<android.support.design.widget.TextInputLayout-->
+                        <!--android:id="@+id/phone_layout"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginTop="@dimen/top_margin">-->
+
+                        <!--<AutoCompleteTextView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:inputType="phone"-->
+                            <!--android:ems="10"-->
+                            <!--android:id="@+id/reg_phone"-->
+                            <!--android:hint="@string/phone"-->
+                            <!--android:background="@drawable/edittextfield"-->
+                            <!--android:singleLine="true"-->
+                            <!--android:imeOptions="actionNext"-->
+                            <!--android:layout_marginLeft="@dimen/autocomplete_margin"-->
+                            <!--android:layout_marginRight="@dimen/autocomplete_margin"/>-->
+
+                    <!--</android.support.design.widget.TextInputLayout>-->
+
+                    <!--<android.support.design.widget.TextInputLayout-->
+                        <!--android:id="@+id/address_layout"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginTop="@dimen/top_margin">-->
+
+                        <!--<AutoCompleteTextView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:inputType="text"-->
+                            <!--android:ems="10"-->
+                            <!--android:id="@+id/reg_address"-->
+                            <!--android:hint="@string/addressf"-->
+                            <!--android:background="@drawable/edittextfield"-->
+                            <!--android:singleLine="true"-->
+                            <!--android:imeOptions="actionNext"-->
+                            <!--android:layout_marginLeft="@dimen/autocomplete_margin"-->
+                            <!--android:layout_marginRight="@dimen/autocomplete_margin"/>-->
+
+                    <!--</android.support.design.widget.TextInputLayout>-->
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/pass_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/top_margin">
+
+                        <AutoCompleteTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:ems="10"
+                            android:id="@+id/reg_pass"
+                            android:hint="@string/password"
+                            android:background="@drawable/edittextfield"
+                            android:layout_marginRight="@dimen/autocomplete_margin"
+                            android:layout_marginLeft="@dimen/autocomplete_margin"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/compass_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/top_margin">
+
+                        <AutoCompleteTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:ems="10"
+                            android:id="@+id/reg_confirmpass"
+                            android:hint="@string/Confirm_password"
+                            android:background="@drawable/edittextfield"
+                            android:layout_marginLeft="@dimen/autocomplete_margin"
+                            android:layout_marginRight="@dimen/autocomplete_margin"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <CheckBox
+                        android:id="@+id/checkBox2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/term_cond"
+                        android:textSize="10dp"
+                        android:checked="false"
+                        android:buttonTint="@color/colorPrimary"
+                        android:layout_marginLeft="@dimen/autocomplete_margin"
+                        android:layout_gravity="start"
+                        android:gravity="center_vertical" />
+                    <Button
+                        android:layout_width="@dimen/button_horizontal_margin"
+                        android:layout_height="@dimen/button_vertical_margin"
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/btnsignup"
+                        android:text="@string/sign_up"
+                        android:textColor="@color/white"
+                        />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginBottom="15dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/already_acc"
+                            android:textColor="@color/black"
+                            android:id="@+id/tvrtrnlgnsupg"
+                            />
+
+                        <TextView
+                            android:id="@+id/login_link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/log_in"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="5dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

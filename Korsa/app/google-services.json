@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "467295081142",
+    "firebase_url": "https://korsa-e03ae.firebaseio.com",
+    "project_id": "korsa-e03ae",
+    "storage_bucket": "korsa-e03ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467295081142:android:e9210d6cde546b4a",
+        "android_client_info": {
+          "package_name": "nil.error.korsa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467295081142-50q31i2ut8e7nhipkb902j6p6lje1tdm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nil.error.korsa",
+            "certificate_hash": "2e0be1f4fa96fd6f4d189ddd73d84b7cce12a34a"
+          }
+        },
+        {
+          "client_id": "467295081142-323ad6n146q0s6qgtlteesqgh4lgeiqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFDgeYI1O8NRLMtDjzVpjGntV87q-YXxQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467295081142-323ad6n146q0s6qgtlteesqgh4lgeiqk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
