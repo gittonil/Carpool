@@ -9,17 +9,25 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -36,6 +44,9 @@ public class OfferRIde extends Fragment {
     int PLACE_PICKER_REQUEST_SOURCE = 1;
     int PLACE_PICKER_REQUEST_DESTINATION = 10;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    Button btnoffer_ride;
+    FirebaseDatabase database;
+    DatabaseReference databaseRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,11 +62,17 @@ public class OfferRIde extends Fragment {
         atvstartDate = (AutoCompleteTextView) view.findViewById(R.id.startDate);
         atvstartTime = (AutoCompleteTextView) view.findViewById(R.id.startTime);
 
+        //firebase database initialize
+        database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference("message");
+        databaseRef.setValue("Hello value!");
+
         tvsource = (TextView) view.findViewById(R.id.sourceText);
         tvdest = (TextView) view.findViewById(R.id.DestinationText);
         tvdate = (TextView) view.findViewById(R.id.DateText);
         tvtime = (TextView) view.findViewById(R.id.TimeText);
         tvseats = (TextView) view.findViewById(R.id.SeatText);
+        btnoffer_ride = (Button) view.findViewById(R.id.submit_ride);
 
         tvseats.setText("Vacant Seats : ");
 
@@ -136,6 +153,35 @@ public class OfferRIde extends Fragment {
                             }
                         }, mHour, mMinute, false);
                 tpd.show();
+            }
+        });
+
+        btnoffer_ride.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseRef = database.getReference("Source_Point");
+                databaseRef.setValue(atvsource.getText().toString());
+                atvsource.setText("");
+                databaseRef = database.getReference("Dest_Point");
+                databaseRef.setValue(atvdestination.getText().toString());
+                atvdestination.setText("");
+                databaseRef = database.getReference("Start_Date");
+                databaseRef.setValue(atvstartDate.getText().toString());
+                atvstartDate.setText("");
+                databaseRef = database.getReference("Start_Time");
+                databaseRef.setValue(atvstartTime.getText().toString());
+                atvstartTime.setText("");
+
+                Fragment main = new MainFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frghomeholder, main);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                getActivity().setTitle("Home Page");
+
+                Toast.makeText(getContext(),"Your ride is created.",Toast.LENGTH_LONG).show();
+
             }
         });
 

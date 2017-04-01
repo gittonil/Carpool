@@ -18,6 +18,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.crash.FirebaseCrash;
+
 import nil.error.korsa.R;
 
 public class MainActivity extends AppCompatActivity
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FirebaseCrash.report(new Exception("Exception caught error code 101"));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -92,8 +97,8 @@ public class MainActivity extends AppCompatActivity
 
 //        } else if (id == R.id.nav_slideshow) {
 //
-//        } else if (id == R.id.nav_manage) {
-
+//        } else if (id == R.id.nav_signout) {
+//            FirebaseAuth.getInstance().signOut();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
