@@ -22,6 +22,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.firebase.client.Config;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
@@ -47,6 +52,7 @@ public class OfferRIde extends Fragment {
     Button btnoffer_ride;
     FirebaseDatabase database;
     DatabaseReference databaseRef;
+    public static final String FIREBASE_URL = "https://korsa-e03ae.firebaseio.com/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,10 @@ public class OfferRIde extends Fragment {
         atvdestination = (AutoCompleteTextView) view.findViewById(R.id.destination);
         atvstartDate = (AutoCompleteTextView) view.findViewById(R.id.startDate);
         atvstartTime = (AutoCompleteTextView) view.findViewById(R.id.startTime);
+
+        //Firebase Client for android set up
+        Firebase.setAndroidContext(getContext());
+
 
         //firebase database initialize
         database = FirebaseDatabase.getInstance();
@@ -156,32 +166,81 @@ public class OfferRIde extends Fragment {
             }
         });
 
+
         btnoffer_ride.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseRef = database.getReference("Source_Point");
-                databaseRef.setValue(atvsource.getText().toString());
-                atvsource.setText("");
-                databaseRef = database.getReference("Dest_Point");
-                databaseRef.setValue(atvdestination.getText().toString());
-                atvdestination.setText("");
-                databaseRef = database.getReference("Start_Date");
-                databaseRef.setValue(atvstartDate.getText().toString());
-                atvstartDate.setText("");
-                databaseRef = database.getReference("Start_Time");
-                databaseRef.setValue(atvstartTime.getText().toString());
-                atvstartTime.setText("");
+//                databaseRef = database.getReference("Source_Point");
+//                databaseRef.setValue(atvsource.getText().toString());
+//                atvsource.setText("");
+//                databaseRef = database.getReference("Dest_Point");
+//                databaseRef.setValue(atvdestination.getText().toString());
+//                atvdestination.setText("");
+//                databaseRef = database.getReference("Start_Date");
+//                databaseRef.setValue(atvstartDate.getText().toString());
+//                atvstartDate.setText("");
+//                databaseRef = database.getReference("Start_Time");
+//                databaseRef.setValue(atvstartTime.getText().toString());
+//                atvstartTime.setText("");
+//
+//                Fragment main = new MainFragment();
+//                FragmentManager fragmentManager = getFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.frghomeholder, main);
+//                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.commit();
+//                getActivity().setTitle("Home Page");
+//
+//                Toast.makeText(getContext(),"Your ride is created.",Toast.LENGTH_LONG).show();
 
-                Fragment main = new MainFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frghomeholder, main);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                getActivity().setTitle("Home Page");
+                Firebase ref = new Firebase(MainActivity.FIREBASE_URL);
 
-                Toast.makeText(getContext(),"Your ride is created.",Toast.LENGTH_LONG).show();
+                final Offerride offerride = new Offerride();
 
+                String sourcePoint = atvsource.getText().toString().trim();
+                String destinationPoint = atvdestination.getText().toString().trim();
+                String startDate = atvstartDate.getText().toString().trim();
+                String startTime = atvstartTime.getText().toString().trim();
+
+                offerride.setSource(sourcePoint);
+                offerride.setDestination(destinationPoint);
+                offerride.setStartDate(startDate);
+                offerride.setStartTime(startTime);
+
+                ref.child("OfferRide").setValue(offerride);
+
+                btnoffer_ride.setEnabled(false);
+
+
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            Offerride offerride1 = snapshot.getValue(Offerride.class);
+
+                            String data = "Data" + offerride1.getSource()+offerride1.getDestination()+offerride1.getStartDate()+offerride1.getStartTime();
+
+                            atvsource.setVisibility(View.GONE);
+                            atvdestination.setVisibility(View.GONE);
+                            atvstartTime.setVisibility(View.GONE);
+                            atvstartDate.setVisibility(View.GONE);
+
+                            tvdest.setVisibility(View.GONE);
+                            tvtime.setVisibility(View.GONE);
+                            tvdate.setVisibility(View.GONE);
+                            tvseats.setVisibility(View.GONE);
+
+                            tvsource.setText(data);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                        System.out.println("Faileed");
+
+                    }
+                });
             }
         });
 
