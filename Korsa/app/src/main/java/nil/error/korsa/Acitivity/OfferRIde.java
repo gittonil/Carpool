@@ -83,6 +83,7 @@ public class OfferRIde extends Fragment {
         atvstartTime = (AutoCompleteTextView) view.findViewById(R.id.startTime);
         listView = (ListView) view.findViewById(R.id.listView);
 
+        listView.setVisibility(View.INVISIBLE);
         //Firebase Client for android set up
         Firebase.setAndroidContext(getContext());
 

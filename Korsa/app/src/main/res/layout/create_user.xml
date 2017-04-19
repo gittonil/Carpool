@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/createUser"
+    android:layout_gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:singleLine="true"
+            android:hint="User Name"
+            android:background="@drawable/edittextfield"
+            android:id="@+id/user_name"
+            android:layout_marginLeft="@dimen/autocomplete_margin"
+            android:layout_marginRight="@dimen/autocomplete_margin"
+            android:alpha="0.9"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:singleLine="true"
+            android:hint="Contact Number"
+            android:background="@drawable/edittextfield"
+            android:id="@+id/user_contactno"
+            android:layout_marginLeft="@dimen/autocomplete_margin"
+            android:layout_marginRight="@dimen/autocomplete_margin"
+            android:alpha="0.9"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:singleLine="true"
+            android:hint="dd/mm/yyyy"
+            android:background="@drawable/edittextfield"
+            android:id="@+id/user_dob"
+            android:layout_marginLeft="@dimen/autocomplete_margin"
+            android:layout_marginRight="@dimen/autocomplete_margin"
+            android:alpha="0.9"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:singleLine="true"
+            android:hint="Age"
+            android:background="@drawable/edittextfield"
+            android:id="@+id/user_age"
+            android:layout_marginLeft="@dimen/autocomplete_margin"
+            android:layout_marginRight="@dimen/autocomplete_margin"
+            android:alpha="0.9"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:singleLine="true"
+            android:hint="Profession"
+            android:background="@drawable/edittextfield"
+            android:id="@+id/user_profession"
+            android:layout_marginLeft="@dimen/autocomplete_margin"
+            android:layout_marginRight="@dimen/autocomplete_margin"
+            android:alpha="0.9"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:singleLine="true"
+            android:hint="Brand Name"
+            android:background="@drawable/edittextfield"
+            android:id="@+id/vehi_brandname"
+            android:layout_marginLeft="@dimen/autocomplete_margin"
+            android:layout_marginRight="@dimen/autocomplete_margin"
+            android:alpha="0.9"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:singleLine="true"
+            android:hint="Model Name"
+            android:background="@drawable/edittextfield"
+            android:id="@+id/vehi_modelname"
+            android:layout_marginLeft="@dimen/autocomplete_margin"
+            android:layout_marginRight="@dimen/autocomplete_margin"
+            android:alpha="0.9"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPhonetic"
+            android:ems="10"
+            android:singleLine="true"
+            android:hint="VehicleNumber"
+            android:background="@drawable/edittextfield"
+            android:id="@+id/vehi_number"
+            android:layout_marginLeft="@dimen/autocomplete_margin"
+            android:layout_marginRight="@dimen/autocomplete_margin"
+            android:alpha="0.9"/>
+    </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+    <RadioButton
+        android:id="@+id/vehi_licence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Licence"
+        android:layout_marginLeft="35dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:ignore="MissingConstraints" />
+
+    <RadioButton
+        android:id="@+id/vehi_puc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PUC"
+        android:layout_marginLeft="15dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:ignore="MissingConstraints" />
+
+        </LinearLayout>
+    <Button
+        android:id="@+id/submit_userDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"/>
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>
