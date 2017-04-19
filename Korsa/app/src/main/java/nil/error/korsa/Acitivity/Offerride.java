@@ -1,27 +1,40 @@
 package nil.error.korsa.Acitivity;
 
+import android.support.annotation.Keep;
+
 /**
  * Created by nilerror on 13/4/17.
  */
 
 public class Offerride {
 
-
-    String source;
-    String destination;
-    String startDate;
-    String startTime;
+    public String uid;
+    public String source;
+    public String destination;
+    public String startDate;
+    public String startTime;
 
     public Offerride(){
 
     }
 
-//    public Offerride(String source, String destination, String startDate, String startTime){
-//        this.source = source;
-//        this.destination = destination;
-//        this.startDate = startDate;
-//        this.startTime = startTime;
-//    }
+    @Keep
+    public Offerride(String uid, String source, String destination, String startDate, String startTime){
+        this.uid = uid;
+        this.source = source;
+        this.destination = destination;
+        this.startDate = startDate;
+        this.startTime = startTime;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
 
     public String getSource() {
         return source;

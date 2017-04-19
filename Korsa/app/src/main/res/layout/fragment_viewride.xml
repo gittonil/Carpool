@@ -13,12 +13,11 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_gravity="center_vertical"
                 android:weightSum="1">
 
-                <TextView
+         <!--       <TextView
                     android:id="@+id/sourceText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,57 +119,21 @@
                             android:alpha="0.9"/>
                     </LinearLayout>
                 </LinearLayout>
-
-                <!--<LinearLayout-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center">-->
-
-                    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_marginTop="25dp"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_marginLeft="25dp"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_height="40dp" &ndash;&gt;-->
-                    <!--&lt;!&ndash;android:text="@string/seatsVacant"/>&ndash;&gt;-->
-                    <!--<LinearLayout-->
-                        <!--android:orientation="vertical"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content">-->
-
-                        <!--<TextView-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:id="@+id/SeatText"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_marginTop="15dp"-->
-                            <!--android:layout_marginBottom="10dp"-->
-                            <!--android:text=" "/>-->
-
-                        <!--<AutoCompleteTextView-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="40dp"-->
-                            <!--android:inputType="number"-->
-                            <!--android:ems="10"-->
-                            <!--android:singleLine="true"-->
-                            <!--android:hint="@string/seatsVacant"-->
-                            <!--android:background="@drawable/edittextfield"-->
-                            <!--android:id="@+id/seatsVacant"-->
-                            <!--android:layout_marginLeft="@dimen/autocomplete_margin"-->
-                            <!--android:layout_marginRight="@dimen/autocomplete_margin"-->
-                            <!--android:alpha="0.9"/>-->
-
-                    <!--</LinearLayout>-->
-                <!--</LinearLayout>-->
-
-
+         -->
                 <Button
+                    android:id="@+id/btnViewRide"
                     android:layout_marginTop="25dp"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Find Ride"/>
+
+                <ListView
+                    android:id="@+id/listViewView"
+                    android:layout_width="match_parent"
+                    android:layout_height="442dp">
+
+                </ListView>
 
             </LinearLayout>
         </ScrollView>

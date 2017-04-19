@@ -12,12 +12,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -31,10 +34,15 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
 import nil.error.korsa.R;
 
@@ -44,15 +52,21 @@ import static android.app.Activity.RESULT_OK;
 public class OfferRIde extends Fragment {
 
     View view;
-    AutoCompleteTextView atvsource, atvdestination, atvstartDate, atvstartTime;
-    TextView tvsource, tvdest, tvdate, tvtime, tvseats;
+    private AutoCompleteTextView atvsource, atvdestination, atvstartDate, atvstartTime;
+    private TextView tvsource, tvdest, tvdate, tvtime, tvseats;
+    private ListView listView;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseRef;
+    private DatabaseReference mFirebaseDatabase;
     int PLACE_PICKER_REQUEST_SOURCE = 1;
     int PLACE_PICKER_REQUEST_DESTINATION = 10;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    Button btnoffer_ride;
-    FirebaseDatabase database;
-    DatabaseReference databaseRef;
+    private Button btnoffer_ride;
+    private FirebaseDatabase mFirebaseInstance;
+    private String userID;
     public static final String FIREBASE_URL = "https://korsa-e03ae.firebaseio.com/";
+
+    private List<Offerride> listOfferride = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,15 +81,43 @@ public class OfferRIde extends Fragment {
         atvdestination = (AutoCompleteTextView) view.findViewById(R.id.destination);
         atvstartDate = (AutoCompleteTextView) view.findViewById(R.id.startDate);
         atvstartTime = (AutoCompleteTextView) view.findViewById(R.id.startTime);
+        listView = (ListView) view.findViewById(R.id.listView);
 
         //Firebase Client for android set up
         Firebase.setAndroidContext(getContext());
 
 
+
         //firebase database initialize
+        FirebaseApp.initializeApp(getContext());
         database = FirebaseDatabase.getInstance();
-        databaseRef = database.getReference("message");
-        databaseRef.setValue("Hello value!");
+        databaseRef = database.getReference();
+//        databaseRef.setValue("Hello value!");
+
+        databaseRef.child("Ride").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+
+                if (listOfferride.size() > 0)
+                    listOfferride.clear();
+                for (com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+
+                    Offerride offerride = postSnapshot.getValue(Offerride.class);
+                    listOfferride.add(offerride);
+                }
+
+                ListViewAdapter listViewAdapter = new ListViewAdapter(getActivity(), listOfferride);
+
+                listView.setAdapter(listViewAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         tvsource = (TextView) view.findViewById(R.id.sourceText);
         tvdest = (TextView) view.findViewById(R.id.DestinationText);
@@ -85,6 +127,33 @@ public class OfferRIde extends Fragment {
         btnoffer_ride = (Button) view.findViewById(R.id.submit_ride);
 
         tvseats.setText("Vacant Seats : ");
+
+
+
+        //code with Realtime Firebase Database Android Hive
+
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+
+        mFirebaseDatabase = mFirebaseInstance.getReference("users");
+
+        mFirebaseInstance.getReference("app_title").setValue("Realtime Database");
+
+        mFirebaseInstance.getReference("app_title").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+
+                String apptitle = dataSnapshot.getValue(String.class);
+
+                tvsource.setText(apptitle);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                System.out.println("Failed to set app title");
+            }
+        });
+
+
 
         atvsource.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,85 +239,107 @@ public class OfferRIde extends Fragment {
         btnoffer_ride.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                databaseRef = database.getReference("Source_Point");
-//                databaseRef.setValue(atvsource.getText().toString());
-//                atvsource.setText("");
-//                databaseRef = database.getReference("Dest_Point");
-//                databaseRef.setValue(atvdestination.getText().toString());
-//                atvdestination.setText("");
-//                databaseRef = database.getReference("Start_Date");
-//                databaseRef.setValue(atvstartDate.getText().toString());
-//                atvstartDate.setText("");
-//                databaseRef = database.getReference("Start_Time");
-//                databaseRef.setValue(atvstartTime.getText().toString());
-//                atvstartTime.setText("");
-//
-//                Fragment main = new MainFragment();
-//                FragmentManager fragmentManager = getFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.frghomeholder, main);
-//                fragmentTransaction.addToBackStack(null);
-//                fragmentTransaction.commit();
-//                getActivity().setTitle("Home Page");
-//
-//                Toast.makeText(getContext(),"Your ride is created.",Toast.LENGTH_LONG).show();
 
-                Firebase ref = new Firebase(MainActivity.FIREBASE_URL);
+         /*   String source = atvsource.getText().toString().trim();
+            String destination = atvdestination.getText().toString().trim();
+            String startDate = atvstartDate.getText().toString().trim();
+            String startTime = atvstartTime.getText().toString().trim();
 
-                final Offerride offerride = new Offerride();
-
-                String sourcePoint = atvsource.getText().toString().trim();
-                String destinationPoint = atvdestination.getText().toString().trim();
-                String startDate = atvstartDate.getText().toString().trim();
-                String startTime = atvstartTime.getText().toString().trim();
-
-                offerride.setSource(sourcePoint);
-                offerride.setDestination(destinationPoint);
-                offerride.setStartDate(startDate);
-                offerride.setStartTime(startTime);
-
-                ref.child("OfferRide").setValue(offerride);
-
-                btnoffer_ride.setEnabled(false);
+                if (TextUtils.isEmpty(userID)){
+//                    createUser(source, destination, startDate, startTime);
+                }else{
+//                    updateUser(source, destination, startDate, startTime);
+                }*/
 
 
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            Offerride offerride1 = snapshot.getValue(Offerride.class);
+         Offerride offerride = new Offerride(UUID.randomUUID().toString(),
+                 atvsource.getText().toString(),
+                 atvdestination.getText().toString(),
+                 atvstartDate.getText().toString(),
+                 atvstartTime.getText().toString());
 
-                            String data = "Data" + offerride1.getSource()+offerride1.getDestination()+offerride1.getStartDate()+offerride1.getStartTime();
+                databaseRef.child("Ride").child(offerride.getUid()).setValue(offerride);
 
-                            atvsource.setVisibility(View.GONE);
-                            atvdestination.setVisibility(View.GONE);
-                            atvstartTime.setVisibility(View.GONE);
-                            atvstartDate.setVisibility(View.GONE);
-
-                            tvdest.setVisibility(View.GONE);
-                            tvtime.setVisibility(View.GONE);
-                            tvdate.setVisibility(View.GONE);
-                            tvseats.setVisibility(View.GONE);
-
-                            tvsource.setText(data);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                        System.out.println("Faileed");
-
-                    }
-                });
             }
         });
+
+//        toggleButton();
 
         this.view = view;
 
         return view;
     }
 
+/*
+    // Changing button text
+    private void toggleButton() {
+        if (TextUtils.isEmpty(userID)) {
+            btnoffer_ride.setText("Save");
+        } else {
+            btnoffer_ride.setText("Update");
+        }
+    }
+
+    */
+/**
+     * Creating new user node under 'users'
+     *//*
+
+    private void createUser(String source, String destination, String startDate, String startTime) {
+        // TODO
+        // In real apps this userId should be fetched
+        // by implementing firebase auth
+        if (TextUtils.isEmpty(userID)) {
+            userID = mFirebaseDatabase.push().getKey();
+        }
+
+        Offerride user = new Offerride(source, destination, startDate, startTime);
+
+        mFirebaseDatabase.push().child(userID).setValue(user);
+*/
+
+//        addUserChangeListener();
+    //}
+//    private void addUserChangeListener(){
+//        mFirebaseDatabase.child(userID).addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+//            @Override
+//            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+//                Offerride user = dataSnapshot.getValue(Offerride.class);
+//
+//                if (user == null){
+//                    Toast.makeText(getContext(),"User data is null!",Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//
+//                tvsource.setText(user.source + " , " + user.destination + " , " + user.startDate + " , " + user.startTime);
+//
+//                toggleButton();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Toast.makeText(getContext(), "Failefddd", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
+//
+//    private void updateUser(String source, String destination, String startDate, String startTime) {
+//        // updating the user via child nodes
+//        if (!TextUtils.isEmpty(source))
+//            mFirebaseDatabase.child(userID).child("source").setValue(source);
+//
+//        if (!TextUtils.isEmpty(destination))
+//            mFirebaseDatabase.child(userID).child("destination").setValue(destination);
+//
+//        if (!TextUtils.isEmpty(startDate))
+//            mFirebaseDatabase.child(userID).child("startDate").setValue(startDate);
+//
+//        if (!TextUtils.isEmpty(startTime))
+//            mFirebaseDatabase.child(userID).child("startTime").setValue(startTime);
+//
+//    }
+//
+//
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == PLACE_PICKER_REQUEST_SOURCE){
             if (resultCode == RESULT_OK){
