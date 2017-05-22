@@ -1,8 +1,11 @@
 package nil.error.korsa.Acitivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -43,6 +46,9 @@ import java.util.List;
 import nil.error.korsa.R;
 import nil.error.korsa.models.DataParser;
 
+import static nil.error.korsa.Acitivity.OfferRIde.dest;
+import static nil.error.korsa.Acitivity.OfferRIde.source;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -53,12 +59,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
+    String sourceValue, destValue;
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Intent intent = getIntent();
+        sourceValue = intent.getStringExtra(source);
+        destValue = intent.getStringExtra(dest);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -97,11 +107,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
 
-        // Setting onclick event listener for the map
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-            @Override
-            public void onMapClick(LatLng point) {
 
                 // Already two locations
                 if (MarkerPoints.size() > 1) {
@@ -109,28 +114,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.clear();
                 }
 
-                // Adding new item to the ArrayList
-                MarkerPoints.add(point);
+        LatLng source = convertLoc(sourceValue);
+        LatLng desti = convertLoc(destValue);
+        MarkerPoints.add(source);
+        MarkerPoints.add(desti);
 
                 // Creating MarkerOptions
                 MarkerOptions options = new MarkerOptions();
+        MarkerOptions options2 = new MarkerOptions();
 
-                // Setting the position of the marker
-                options.position(point);
 
+        // Setting the position of the marker
+        options.position(source);
+        options2.position(desti);
                 /**
                  * For the start location, the color of marker is GREEN and
                  * for the end location, the color of marker is RED.
                  */
-                if (MarkerPoints.size() == 1) {
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                } else if (MarkerPoints.size() == 2) {
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                }
+        options2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
 
 
                 // Add new marker to the Google Map Android API V2
                 mMap.addMarker(options);
+        mMap.addMarker(options2);
 
                 // Checks, whether start and end locations are captured
                 if (MarkerPoints.size() >= 2) {
@@ -138,8 +146,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     LatLng dest = MarkerPoints.get(1);
 
                     // Getting URL to the Google Directions API
-                    String url = getUrl(origin, dest);
-                    Log.d("onMapClick", url.toString());
+                    String url = getUrl(source, desti);
+                    Log.d("onMapClick", url);
                     FetchUrl FetchUrl = new FetchUrl();
 
                     // Start downloading json data from Google Directions API
@@ -149,9 +157,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
                 }
 
-            }
-        });
 
+    }
+
+    private LatLng convertLoc(String address) {
+        // Adding new item to the ArrayList
+        Geocoder coder = new Geocoder(this);
+        LatLng location;
+        try {
+            ArrayList<Address> adresses = (ArrayList<Address>) coder.getFromLocationName(address, 50);
+            for (Address add : adresses) {
+                double longitude = add.getLongitude();
+                double latitude = add.getLatitude();
+                location = new LatLng(latitude, longitude);
+                return location;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private String getUrl(LatLng origin, LatLng dest) {
