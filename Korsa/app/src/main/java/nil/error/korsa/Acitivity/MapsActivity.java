@@ -108,56 +108,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-                // Already two locations
-                if (MarkerPoints.size() > 1) {
-                    MarkerPoints.clear();
-                    mMap.clear();
-                }
+        plotDirections();
 
+
+    }
+
+    private void plotDirections() {
         LatLng source = convertLoc(sourceValue);
         LatLng desti = convertLoc(destValue);
         MarkerPoints.add(source);
         MarkerPoints.add(desti);
 
-                // Creating MarkerOptions
-                MarkerOptions options = new MarkerOptions();
+        // Creating MarkerOptions
+        MarkerOptions options = new MarkerOptions();
         MarkerOptions options2 = new MarkerOptions();
 
 
         // Setting the position of the marker
-        options.position(source);
-        options2.position(desti);
-                /**
-                 * For the start location, the color of marker is GREEN and
-                 * for the end location, the color of marker is RED.
-                 */
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        options2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        if (source != null && desti != null) {
+            options.position(source);
+            options2.position(desti);
+            /**
+             * For the start location, the color of marker is GREEN and
+             * for the end location, the color of marker is RED.
+             */
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            options2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
 
+            // Add new marker to the Google Map Android API V2
+            mMap.addMarker(options);
+            mMap.addMarker(options2);
 
-                // Add new marker to the Google Map Android API V2
-                mMap.addMarker(options);
-        mMap.addMarker(options2);
+            // Checks, whether start and end locations are captured
 
-                // Checks, whether start and end locations are captured
-                if (MarkerPoints.size() >= 2) {
-                    LatLng origin = MarkerPoints.get(0);
-                    LatLng dest = MarkerPoints.get(1);
+            // Getting URL to the Google Directions API
+            String url = getUrl(source, desti);
+            Log.d("onMapClick", url);
+            FetchUrl FetchUrl = new FetchUrl();
 
-                    // Getting URL to the Google Directions API
-                    String url = getUrl(source, desti);
-                    Log.d("onMapClick", url);
-                    FetchUrl FetchUrl = new FetchUrl();
+            // Start downloading json data from Google Directions API
+            FetchUrl.execute(url);
+            //move map camera
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(source));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
-                    // Start downloading json data from Google Directions API
-                    FetchUrl.execute(url);
-                    //move map camera
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-                }
-
-
+        } else
+            Toast.makeText(MapsActivity.this, "Failed to get Directions", Toast.LENGTH_SHORT).show();
     }
 
     private LatLng convertLoc(String address) {
@@ -291,8 +288,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        // mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        plotDirections();
 
         //stop location updates
         if (mGoogleApiClient != null) {
@@ -383,7 +381,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
+                Log.d("Background Task data", data);
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
             }
