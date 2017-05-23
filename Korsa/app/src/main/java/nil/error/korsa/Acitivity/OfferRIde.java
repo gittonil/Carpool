@@ -263,6 +263,18 @@ public class OfferRIde extends Fragment {
 
             }
         });
+        
+        mEn_route.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent route = new Intent(getActivity(), MapsActivity.class);
+                route.putExtra(source, atvsource.getText().toString());
+                route.putExtra(dest, atvdestination.getText().toString());
+                startActivity(route);
+
+            }
+        });
+
 
 //        toggleButton();
 
