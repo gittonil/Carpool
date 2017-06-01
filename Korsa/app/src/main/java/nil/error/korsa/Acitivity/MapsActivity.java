@@ -46,8 +46,8 @@ import java.util.List;
 import nil.error.korsa.R;
 import nil.error.korsa.models.DataParser;
 
-import static nil.error.korsa.Acitivity.OfferRIde.dest;
-import static nil.error.korsa.Acitivity.OfferRIde.source;
+import static nil.error.korsa.Acitivity.Offerride.mapdest;
+import static nil.error.korsa.Acitivity.Offerride.mapsource;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -67,8 +67,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         Intent intent = getIntent();
-        sourceValue = intent.getStringExtra(source);
-        destValue = intent.getStringExtra(dest);
+        sourceValue = intent.getStringExtra(mapsource);
+        destValue = intent.getStringExtra(mapdest);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();

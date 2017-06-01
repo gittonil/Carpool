@@ -14,8 +14,8 @@ import java.util.List;
 
 import nil.error.korsa.R;
 
-import static nil.error.korsa.Acitivity.OfferRIde.dest;
-import static nil.error.korsa.Acitivity.OfferRIde.source;
+import static nil.error.korsa.Acitivity.Offerride.mapdest;
+import static nil.error.korsa.Acitivity.Offerride.mapsource;
 
 /**
  * Created by nilerror on 18/4/17.
@@ -59,19 +59,31 @@ public class ListViewAdapter extends BaseAdapter {
         TextView textStartTime = (TextView) itemView.findViewById(R.id.listtvstarttime);
         Button viewRoute = (Button) itemView.findViewById(R.id.viewRoute);
 
+        Boolean gendermale, genderfemale, genderother;
+        String seats;
 
-        textSource.setText(offerrideList.get(position).getSource());
-        textDestination.setText(offerrideList.get(position).getDestination());
+
+        textSource.setText("Source : " + offerrideList.get(position).getSource());
+        textDestination.setText("Destination : " + offerrideList.get(position).getDestination());
         textStartDate.setText(offerrideList.get(position).getStartDate());
         textStartTime.setText(offerrideList.get(position).getStartTime());
+        seats = offerrideList.get(position).getSeatVacancy();
+        gendermale = offerrideList.get(position).getGenderMale();
+        genderfemale = offerrideList.get(position).getGenderFemale();
+        genderother = offerrideList.get(position).getGenderOther();
 
+
+        System.out.print(gendermale);
+        System.out.print(genderfemale);
+        System.out.print(genderother);
+        System.out.print(seats);
 
         viewRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent route = new Intent(itemView.getContext(), MapsActivity.class);
-                route.putExtra(source, textSource.getText().toString());
-                route.putExtra(dest, textDestination.getText().toString());
+                route.putExtra(mapsource, textSource.getText().toString());
+                route.putExtra(mapdest, textDestination.getText().toString());
                 itemView.getContext().startActivity(route);
 
             }

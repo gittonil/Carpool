@@ -1,7 +1,11 @@
 package nil.error.korsa.Acitivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +20,8 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
 
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,10 +46,10 @@ import nil.error.korsa.R;
 
 public class ForgetPassword extends Fragment {
 
-    private EditText tvMobileno;
+    private EditText tvemailid;
     private Button btnClick;
     private Context context;
-    ProgressDialog PD;
+    private FirebaseAuth mAuth;
 
     public ForgetPassword() {
         // Required empty public constructor
@@ -66,116 +72,79 @@ public class ForgetPassword extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_forget_password, container, false);
+
+
+        mAuth = FirebaseAuth.getInstance();
+
         init(view);
         return view;
     }
 
     void init(View view){
         context = view.getContext();
-        tvMobileno = (EditText) view.findViewById(R.id.edtOTP);
+        tvemailid = (EditText) view.findViewById(R.id.edtOTP);
         btnClick = (Button)view.findViewById(R.id.btnClick);
+
         btnClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mobile[]=new String[1];
-                mobile[0]=tvMobileno.getText().toString();
-                new ForgetAsync().execute(mobile);
+
+                if (isNetworkAvailable() == true) {
+                    String email = tvemailid.getText().toString().trim();
+                    mAuth.sendPasswordResetEmail(email);
+
+                    final Handler handler = new Handler();
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showMessage("Password Reset","Password reset mail sent to your email id.");
+                        }
+                    },2000);
+
+                }else {
+                    Toast.makeText(getContext(),"Please connect to internet",Toast.LENGTH_LONG).show();
+                }
+
+
             }
         });
     }
 
-
-    class ForgetAsync extends AsyncTask<String, Void, Void> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            PD = new ProgressDialog(getContext());
-            PD.setTitle("Please Wait..");
-            PD.setMessage("Loading...");
-            PD.setCancelable(false);
-            PD.show();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-//            String uname = params[0];
-//            String pass = params[1];
-
-            InputStream is = null;
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
+    public void showMessage(String title,String message)
+    {
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Fragment f=new Login();
+                                FragmentManager fm=getActivity().getSupportFragmentManager();
+                                FragmentTransaction ft=fm.beginTransaction();
+                                ft.replace(R.id.baseframelayout,f);
+                                ft.addToBackStack(null);
+                                ft.commit();
+                            }
+                        },1500);
 
-//                nameValuePairs.add(new BasicNameValuePair("", pass));
-            String result = null;
-            Handler handler = new Handler(context.getMainLooper());
-//            Looper.prepare();
-
-            try {
-
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(
-                        "http://apps.zealeducation.com/forgotpassword.php?mobileno=" + params[0]);
-//                httpPost.setEntity(new UrlEncodedFormEntity(""));
-
-                HttpResponse response = httpClient.execute(httpPost);
-                HttpEntity entity = response.getEntity();
-                String rbody = EntityUtils.toString(entity);
-                System.out.print("Entity" + rbody + params[0]);
-                try {
-                    final JSONObject resp = new JSONObject(rbody);
-//                    handler = new Handler(context.getMainLooper());
-                    //   Looper.prepare();
-                    if(resp.get("mobileno").equals(params[0])){ // {"id":"3","fullname":"yadav","mobileno":"8237471787","password":"1234","email":"yadav@s","activate":"1","otp":"63519"}
-//                        Fragment f=new ForgetOTP();
-//                        Bundle b =new Bundle();
-//                        b.putString("json",resp.toString());
-//                        f.setArguments(b);
-//                        FragmentManager fm=getActivity().getSupportFragmentManager();
-//                        FragmentTransaction ft=fm.beginTransaction();
-//                        ft.replace(R.id.baseframelayout,f);
-//                        ft.addToBackStack(null);
-//                        ft.commit();
-                    }else{
-
-                    }
-
-                } catch (JSONException e) {
-                    handler.post(new Runnable() {
-                        public void run() {
-                            Toast.makeText(context, "Check your mobile number ", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-                    System.out.print("Jsonnexp" + e.toString());
-                }
-                System.out.println("\n\n\nDatttaaa" + rbody);
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-                handler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            Toast.makeText(getContext(), "Check connection", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            System.out.print("Jsonnexp" + e.toString());
-                        }
                     }
                 });
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            PD.dismiss();
-        }
-
+        builder.setMessage(message);
+        builder.show();
     }
 
 

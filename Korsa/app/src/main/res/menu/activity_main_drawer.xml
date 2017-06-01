@@ -4,35 +4,57 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_my_profile"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_profile"
             android:title="My Profile" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/nav_offer"
+            android:icon="@drawable/ic_offer"
             android:title="Offer" />
+
+        <item
+            android:id="@+id/nav_refer"
+            android:icon="@drawable/ic_refer"
+            android:title="Refer to Friend" />
+
+        <item
+            android:id="@+id/nav_wallet"
+            android:icon="@drawable/ic_payments"
+            android:title="Payments Wallet" />
+
+        <item
+            android:id="@+id/nav_bookrequest"
+            android:icon="@drawable/ic_booking"
+            android:title="Booking Request" />
+
+        <item
+            android:id="@+id/nav_myride"
+            android:icon="@drawable/ic_myrides"
+            android:title="My Rides" />
+
+
         <item
             android:id="@+id/nav_signout"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_signout"
             android:title="Signout" />
 
         <!--<item-->
-            <!--android:id="@+id/nav_slideshow"-->
-            <!--android:icon="@drawable/ic_menu_slideshow"-->
-            <!--android:title="Account" />-->
+        <!--android:id="@+id/nav_slideshow"-->
+        <!--android:icon="@drawable/ic_menu_slideshow"-->
+        <!--android:title="Account" />-->
         <!--<item-->
-            <!--android:id="@+id/nav_manage"-->
-            <!--android:icon="@drawable/ic_menu_manage"-->
-            <!--android:title="Tools" />-->
+        <!--android:id="@+id/nav_manage"-->
+        <!--android:icon="@drawable/ic_menu_manage"-->
+        <!--android:title="Tools" />-->
     </group>
 
     <item android:title="">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_community"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Account" />
+                android:title="Community Support" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_rating"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Rating" />
         </menu>

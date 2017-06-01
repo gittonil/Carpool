@@ -28,7 +28,7 @@
                 android:id="@+id/logo"
                 android:layout_height="@dimen/logo_height"
                 android:layout_width="@dimen/logo_width"
-                android:background="@drawable/logo"
+                android:background="@drawable/poolit"
                 android:layout_gravity="center_vertical"/>
 
         </LinearLayout>
@@ -196,7 +196,8 @@
                         android:layout_marginTop="20dp"
                         android:id="@+id/btnsignup"
                         android:text="@string/sign_up"
-                        android:textColor="@color/white"
+                        android:background="@drawable/shape"
+                        android:textColor="@drawable/buttontext"
                         />
                     <LinearLayout
                         android:orientation="horizontal"

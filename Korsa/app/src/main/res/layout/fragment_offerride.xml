@@ -126,12 +126,6 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <!--<TextView-->
-                <!--android:layout_marginTop="25dp"-->
-                <!--android:layout_marginLeft="25dp"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="40dp" -->
-                <!--android:text="@string/seatsVacant"/>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -174,15 +168,18 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp">
-                    <RadioButton
+                    <CheckBox
+                        android:id="@+id/gendermale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Male"/>
-                    <RadioButton
+                    <CheckBox
+                        android:id="@+id/genderfemale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Female"/>
-                    <RadioButton
+                    <CheckBox
+                        android:id="@+id/genderother"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Other"/>
@@ -202,6 +199,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/shape"
+                android:textColor="@drawable/buttontext"
                 android:text="View Route" />
 
         <Button
@@ -209,14 +208,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/shape"
+            android:textColor="@drawable/buttontext"
             android:text="Publish Ride"/>
-        </LinearLayout>
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-        </ListView>
+        </LinearLayout>
 
     </LinearLayout>
     </ScrollView>

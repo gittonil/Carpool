@@ -1,12 +1,17 @@
 package nil.error.korsa.Acitivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +41,8 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,23 +55,27 @@ import java.util.UUID;
 import nil.error.korsa.R;
 
 import static android.app.Activity.RESULT_OK;
+import static nil.error.korsa.Acitivity.Offerride.mapdest;
+import static nil.error.korsa.Acitivity.Offerride.mapsource;
 
 
 public class OfferRIde extends Fragment {
 
     View view;
-    private AutoCompleteTextView atvsource, atvdestination, atvstartDate, atvstartTime;
+    private AutoCompleteTextView atvsource, atvdestination, atvstartDate, atvstartTime, atvseats;
     private TextView tvsource, tvdest, tvdate, tvtime, tvseats;
     private ListView listView;
+    private CheckBox checkgendermale, checkgenderfemale, checkgenderother;
     private FirebaseDatabase database;
     private DatabaseReference databaseRef;
     private DatabaseReference mFirebaseDatabase;
     int PLACE_PICKER_REQUEST_SOURCE = 1;
     int PLACE_PICKER_REQUEST_DESTINATION = 10;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private Button btnoffer_ride;
+    private Button btnoffer_ride, mEn_route;
     private FirebaseDatabase mFirebaseInstance;
     private String userID;
+    private String offeremail;
     public static final String FIREBASE_URL = "https://korsa-e03ae.firebaseio.com/";
 
     private List<Offerride> listOfferride = new ArrayList<>();
@@ -81,13 +93,24 @@ public class OfferRIde extends Fragment {
         atvdestination = (AutoCompleteTextView) view.findViewById(R.id.destination);
         atvstartDate = (AutoCompleteTextView) view.findViewById(R.id.startDate);
         atvstartTime = (AutoCompleteTextView) view.findViewById(R.id.startTime);
-        listView = (ListView) view.findViewById(R.id.listView);
+        atvseats = (AutoCompleteTextView) view.findViewById(R.id.seatsVacant);
+        checkgendermale = (CheckBox) view.findViewById(R.id.gendermale);
+        checkgenderother = (CheckBox) view.findViewById(R.id.genderfemale);
+        checkgenderfemale = (CheckBox) view.findViewById(R.id.genderother);
+        mEn_route = (Button) view.findViewById(R.id.en_route);
+        //listView = (ListView) view.findViewById(R.id.listView);
 
-        listView.setVisibility(View.INVISIBLE);
+        //listView.setVisibility(View.INVISIBLE);
         //Firebase Client for android set up
         Firebase.setAndroidContext(getContext());
 
 
+        //get user email address
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null){
+            offeremail = user.getEmail();
+        }
 
         //firebase database initialize
         FirebaseApp.initializeApp(getContext());
@@ -95,6 +118,7 @@ public class OfferRIde extends Fragment {
         databaseRef = database.getReference();
 //        databaseRef.setValue("Hello value!");
 
+/*
         databaseRef.child("Ride").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
@@ -107,6 +131,7 @@ public class OfferRIde extends Fragment {
                     listOfferride.add(offerride);
                 }
 
+
                 ListViewAdapter listViewAdapter = new ListViewAdapter(getActivity(), listOfferride);
 
                 listView.setAdapter(listViewAdapter);
@@ -118,6 +143,7 @@ public class OfferRIde extends Fragment {
 
             }
         });
+*/
 
 
         tvsource = (TextView) view.findViewById(R.id.sourceText);
@@ -241,26 +267,33 @@ public class OfferRIde extends Fragment {
             @Override
             public void onClick(View v) {
 
-         /*   String source = atvsource.getText().toString().trim();
-            String destination = atvdestination.getText().toString().trim();
-            String startDate = atvstartDate.getText().toString().trim();
-            String startTime = atvstartTime.getText().toString().trim();
+                if (isNetworkAvailable() == true) {
 
-                if (TextUtils.isEmpty(userID)){
-//                    createUser(source, destination, startDate, startTime);
-                }else{
-//                    updateUser(source, destination, startDate, startTime);
-                }*/
+                    Offerride offerride = new Offerride(UUID.randomUUID().toString(),
+                            atvsource.getText().toString(),
+                            atvdestination.getText().toString(),
+                            atvstartDate.getText().toString(),
+                            atvstartTime.getText().toString(),
+                            atvseats.getText().toString(),
+                            checkgendermale.isChecked(),
+                            checkgenderfemale.isChecked(),
+                            checkgenderother.isChecked());
+
+                    databaseRef.child("Ride").child(offerride.getUid()).setValue(offerride);
 
 
-         Offerride offerride = new Offerride(UUID.randomUUID().toString(),
-                 atvsource.getText().toString(),
-                 atvdestination.getText().toString(),
-                 atvstartDate.getText().toString(),
-                 atvstartTime.getText().toString());
+                    final Handler handler = new Handler();
 
-                databaseRef.child("Ride").child(offerride.getUid()).setValue(offerride);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showMessage("Published Ride","Successfully Published Your Ride.");
+                        }
+                    },2000);
 
+                }else {
+                    Toast.makeText(getContext(),"Please connect to internet",Toast.LENGTH_LONG).show();
+                }
             }
         });
         
@@ -268,8 +301,8 @@ public class OfferRIde extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent route = new Intent(getActivity(), MapsActivity.class);
-                route.putExtra(source, atvsource.getText().toString());
-                route.putExtra(dest, atvdestination.getText().toString());
+                route.putExtra(mapsource, atvsource.getText().toString());
+                route.putExtra(mapdest, atvdestination.getText().toString());
                 startActivity(route);
 
             }
@@ -283,76 +316,7 @@ public class OfferRIde extends Fragment {
         return view;
     }
 
-/*
-    // Changing button text
-    private void toggleButton() {
-        if (TextUtils.isEmpty(userID)) {
-            btnoffer_ride.setText("Save");
-        } else {
-            btnoffer_ride.setText("Update");
-        }
-    }
 
-    */
-/**
-     * Creating new user node under 'users'
-     *//*
-
-    private void createUser(String source, String destination, String startDate, String startTime) {
-        // TODO
-        // In real apps this userId should be fetched
-        // by implementing firebase auth
-        if (TextUtils.isEmpty(userID)) {
-            userID = mFirebaseDatabase.push().getKey();
-        }
-
-        Offerride user = new Offerride(source, destination, startDate, startTime);
-
-        mFirebaseDatabase.push().child(userID).setValue(user);
-*/
-
-//        addUserChangeListener();
-    //}
-//    private void addUserChangeListener(){
-//        mFirebaseDatabase.child(userID).addValueEventListener(new com.google.firebase.database.ValueEventListener() {
-//            @Override
-//            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-//                Offerride user = dataSnapshot.getValue(Offerride.class);
-//
-//                if (user == null){
-//                    Toast.makeText(getContext(),"User data is null!",Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//
-//                tvsource.setText(user.source + " , " + user.destination + " , " + user.startDate + " , " + user.startTime);
-//
-//                toggleButton();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Toast.makeText(getContext(), "Failefddd", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
-//
-//    private void updateUser(String source, String destination, String startDate, String startTime) {
-//        // updating the user via child nodes
-//        if (!TextUtils.isEmpty(source))
-//            mFirebaseDatabase.child(userID).child("source").setValue(source);
-//
-//        if (!TextUtils.isEmpty(destination))
-//            mFirebaseDatabase.child(userID).child("destination").setValue(destination);
-//
-//        if (!TextUtils.isEmpty(startDate))
-//            mFirebaseDatabase.child(userID).child("startDate").setValue(startDate);
-//
-//        if (!TextUtils.isEmpty(startTime))
-//            mFirebaseDatabase.child(userID).child("startTime").setValue(startTime);
-//
-//    }
-//
-//
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == PLACE_PICKER_REQUEST_SOURCE){
             if (resultCode == RESULT_OK){
@@ -371,6 +335,42 @@ public class OfferRIde extends Fragment {
                 tvdest.setText("Destination Point : ");
             }
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
+    public void showMessage(String title,String message)
+    {
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Fragment f=new MainFragment();
+                                FragmentManager fm=getActivity().getSupportFragmentManager();
+                                FragmentTransaction ft=fm.beginTransaction();
+                                ft.replace(R.id.frghomeholder,f);
+                                ft.addToBackStack(null);
+                                ft.commit();
+                            }
+                        },1500);
+
+                    }
+                });
+        builder.setMessage(message);
+        builder.show();
     }
 
 }

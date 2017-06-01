@@ -2,6 +2,7 @@ package nil.error.korsa.Acitivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.crash.FirebaseCrash;
 
 import nil.error.korsa.R;
@@ -28,6 +32,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String FIREBASE_URL = "https://korsa-e03ae.firebaseio.com/";
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private TextView headmail;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +52,18 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        FirebaseUser users = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (users != null){
+            email = users.getEmail();
+        }
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+        headmail = (TextView) header.findViewById(R.id.headmail);
+        headmail.setText(email);
 
         Fragment main = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -54,6 +72,27 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         setTitle("Home Page");
+
+        //get firebase auth instance
+        auth = FirebaseAuth.getInstance();
+
+        //get current user
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user == null) {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(MainActivity.this, Authentication.class));
+                    finish();
+                }
+
+            }
+        };
+
     }
 
     @Override
@@ -97,16 +136,16 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_my_profile) {
             startActivity(new Intent(MainActivity.this,UserProfile.class));
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_offer) {
 
 //        } else if (id == R.id.nav_slideshow) {
 //
 //        } else if (id == R.id.nav_signout) {
 //            FirebaseAuth.getInstance().signOut();
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_signout) {
+            signOut();
+        } else if (id == R.id.nav_wallet) {
 
         }
 
@@ -114,4 +153,29 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void signOut() {
+        auth.signOut();
+        Toast.makeText(getApplicationContext(),"Successfully sign out",Toast.LENGTH_LONG).show();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
+        }
+    }
 }
+

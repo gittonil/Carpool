@@ -115,7 +115,7 @@ public class Login extends Fragment {
             b.setBackground(getResources().getDrawable(R.drawable.shape));
         } else {
             b.setEnabled(true);
-            b.setBackground(getResources().getDrawable(R.drawable.disableshape));
+            b.setBackground(getResources().getDrawable(R.drawable.shape));
         }
     }
     public Login() {

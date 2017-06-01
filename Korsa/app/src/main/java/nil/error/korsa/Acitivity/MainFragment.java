@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.ButtonBarLayout;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class MainFragment extends Fragment {
     View view;
 
     Button btn_offer_ride, btn_view_ride;
-
+    private CardView cardoffer, cardview;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +37,11 @@ public class MainFragment extends Fragment {
 
         this.view = view;
 
-        btn_offer_ride = (Button) view.findViewById(R.id.offer_ride);
-        btn_view_ride = (Button) view.findViewById(R.id.view_ride);
+        cardoffer = (CardView) view.findViewById(R.id.card_offer);
+        cardview = (CardView) view.findViewById(R.id.card_view);
 
 
-        btn_offer_ride.setOnClickListener(new View.OnClickListener() {
+        cardoffer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new OfferRIde();
@@ -53,7 +54,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        btn_view_ride.setOnClickListener(new View.OnClickListener() {
+        cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new ViewRide();
